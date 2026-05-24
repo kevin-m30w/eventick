@@ -7,14 +7,14 @@ const router = useRouter()
 
 const loading = ref(false)
 const serverError = ref('')
-const successMessage =  ref('')
+const successMessage = ref('')
 
 const schema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string()
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "Password don't match",
+    message: "Passwords don't match",
     path: ['confirmPassword']
 })
 
@@ -36,6 +36,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             email: event.data.email,
             password: event.data.password,
             options: {
+                // Safely points back to your client-side origin route
                 emailRedirectTo: `${window.location.origin}/confirm`
             }
         })
@@ -44,6 +45,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
         if (data.user && data.session === null) {
             successMessage.value = "Registration successful! Please check your email to confirm your account."
+            // Optional: Clear form states upon success
+            state.email = ''
+            state.password = ''
+            state.confirmPassword = ''
         } else {
             router.push('/dashboard')
         }
