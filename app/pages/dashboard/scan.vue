@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Html5QrcodeScanner } from "html5-qrcode";
 
-// Lock page down to organizers/admins only
 definePageMeta({
   middleware: ["organizer-only"],
+  layout: "dashboard",
 });
 
 const supabase = useSupabaseClient() as any;
@@ -180,7 +180,7 @@ onUnmounted(() => {
           </div>
         </div>
         <UButton
-          color="gray"
+          color="neutral"
           variant="solid"
           block
           class="mt-2"
